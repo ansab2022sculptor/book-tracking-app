@@ -51,7 +51,7 @@ function Search() {
           <div className="search-books-input-wrapper">
             <input
               type="text"
-              placeholder="Search by title or author"
+              placeholder="Search by title, author, or ISBN"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
