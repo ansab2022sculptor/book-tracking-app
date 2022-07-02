@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import useQuery from "../hooks/useQuery";
+import { NavLink } from "react-router-dom";
 import "./../App.css";
 import * as BooksAPI from "./../BooksAPI";
 import Header from "./Header";
@@ -9,9 +8,6 @@ import Shelves from "./Shelves";
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [mapOfIdToBooks, setMapOfIdToBooks] = useState(new Map());
-  const [query, setQuery] = useState("");
-  const [searchBooks, setSearchBooks] = useQuery(query);
-  const [mergedBooks, setMergedBooks] = useState([]);
 
   useEffect(() => {
     BooksAPI.getAll().then((data) => {
@@ -20,17 +16,6 @@ const Home = () => {
       console.log(data);
     });
   }, []);
-
-  useEffect(() => {
-    const combined = searchBooks.map((book) => {
-      if (mapOfIdToBooks.has(book.id)) {
-        return mapOfIdToBooks.get(book.id);
-      } else {
-        return book;
-      }
-    });
-    setMergedBooks(combined);
-  }, [searchBooks]);
 
   const createMapOfBooks = (books) => {
     const map = new Map();
@@ -61,9 +46,7 @@ const Home = () => {
         <Shelves books={books} updateBookShelf={updateBookShelf} />
       </div>
       <div className="open-search">
-        <Link to="/search">
-          <a>Add a book</a>
-        </Link>
+        <NavLink to="/search">Add a book</NavLink>
       </div>
     </div>
   );

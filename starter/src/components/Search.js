@@ -7,10 +7,10 @@ import "../App.css";
 
 function Search() {
   const [books, setBooks] = useState([]);
-  const [mapOfIdToBooks, setMapOfIdToBooks] = useState(new Map());
+  const [mapOfIdToBooks, setMapOfIdToBooks] = useState([]);
 
   const [query, setQuery] = useState("");
-  const [searchBooks, setSearchBooks] = useQuery(query);
+  const [searchBooks] = useQuery(query);
   const [mergedBooks, setMergedBooks] = useState([]);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function Search() {
     });
 
     setMergedBooks(combined);
-  }, [searchBooks]);
+  }, [searchBooks, mapOfIdToBooks]);
 
   const updateBookShelf = (book, whereTo) => {
     const updatedBooks = books.map((b) => {
