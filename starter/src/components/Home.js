@@ -17,6 +17,7 @@ const Home = () => {
     BooksAPI.getAll().then((data) => {
       setBooks(data);
       setMapOfIdToBooks(createMapOfBooks(data));
+      console.log(data);
     });
   }, []);
 

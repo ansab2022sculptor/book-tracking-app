@@ -1,4 +1,5 @@
 import React from "react";
+import noThumbnailImage from "../icons/no_cover_thumb.gif";
 
 function Book({ book, changeBookShelf }) {
   return (
@@ -9,7 +10,9 @@ function Book({ book, changeBookShelf }) {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${book.imageLinks.thumbnail})`,
+            backgroundImage: `url(${
+              book.imageLinks ? book.imageLinks.thumbnail : noThumbnailImage
+            })`,
           }}
         ></div>
         <div className="book-shelf-changer">
@@ -28,7 +31,7 @@ function Book({ book, changeBookShelf }) {
         </div>
       </div>
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.publisher}</div>
+      <div className="book-authors">{book.authors}</div>
     </div>
   );
 }

@@ -13,6 +13,25 @@ function Search() {
   const [searchBooks, setSearchBooks] = useQuery(query);
   const [mergedBooks, setMergedBooks] = useState([]);
 
+  useEffect(() => {
+    BooksAPI.getAll().then((data) => {
+      setBooks(data);
+      setMapOfIdToBooks(createMapOfBooks(data));
+    });
+  }, []);
+
+  useEffect(() => {
+    const combined = searchBooks.map((book) => {
+      if (mapOfIdToBooks.has(book.id)) {
+        return mapOfIdToBooks.get(book.id);
+      } else {
+        return book;
+      }
+    });
+
+    setMergedBooks(combined);
+  }, [searchBooks]);
+
   const updateBookShelf = (book, whereTo) => {
     const updatedBooks = books.map((b) => {
       if (b.id === book.id) {
@@ -30,16 +49,11 @@ function Search() {
     BooksAPI.update(book, whereTo);
   };
 
-  useEffect(() => {
-    const combined = searchBooks.map((book) => {
-      if (mapOfIdToBooks.has(book.id)) {
-        return mapOfIdToBooks.get(book.id);
-      } else {
-        return book;
-      }
-    });
-    setMergedBooks(combined);
-  }, [searchBooks]);
+  const createMapOfBooks = (books) => {
+    const map = new Map();
+    books.map((book) => map.set(book.id, book));
+    return map;
+  };
 
   return (
     <div className="app">
@@ -51,13 +65,18 @@ function Search() {
           <div className="search-books-input-wrapper">
             <input
               type="text"
-              placeholder="Search by title, author, or ISBN"
+              placeholder="Search by title or author"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
         </div>
         <div className="search-books-results">
+          {searchBooks.length > 0 && (
+            <div>
+              <h2>Search Returned: {searchBooks.length} books</h2>
+            </div>
+          )}
           <ol className="books-grid">
             {mergedBooks.map((b) => (
               <li key={b.id}>
